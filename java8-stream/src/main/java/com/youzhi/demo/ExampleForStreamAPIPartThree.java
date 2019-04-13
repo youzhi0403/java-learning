@@ -89,10 +89,21 @@ public class ExampleForStreamAPIPartThree {
                 Collectors.counting()));
         System.out.println(totalNum);
 
+        //想得到分数为59的各个学生的名称
+        Map<Integer,List<String>> result = students.stream().collect(Collectors.groupingBy(Student::getGrade,
+                Collectors.mapping(Student::getName,  //下游收集器
+                        Collectors.toList())));   //更下游的收集器
+        System.out.println(result);
+
+
         /**
          * 5.使用collect()做字符串join
          */
-
+        Stream<String> stream4 = Stream.of("I","love","you");
+        /*String joined = stream4.collect(Collectors.joining());*/  //"Iloveyou"
+        /*String joined = stream4.collect(Collectors.joining(","));*/  //"I,love,you"
+        String joined = stream4.collect(Collectors.joining(",","{","}")); //"{I,love,you}"
+        System.out.println(joined);
 
     }
 
@@ -107,6 +118,10 @@ public class ExampleForStreamAPIPartThree {
 
         public int getGrade() {
             return grade;
+        }
+
+        public String getName() {
+            return name;
         }
 
         @Override
